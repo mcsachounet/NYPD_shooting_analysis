@@ -29,7 +29,7 @@ shootings$DENSITY<- as.numeric(as.character(shootings$DENSITY))
 p<- shootings%>%ggplot(aes(x=OCCUR_DATE, y = ..count.., col=BORO))
 q=p+geom_density()+xlab("DATE")+ ylab("COUNT")+ggtitle("DENSITY PLOT OF NYC SHOOTING EVENTS")
 q
-#simple barplot(the best) 
+#simple barplot
 p<-shootings%>%ggplot(aes(x=forcats::fct_infreq(BORO)))+geom_bar()+xlab("")+ ylab("COUNT")+ggtitle("HISTO OF NYC SHOOTING EVENTS FROM 2016 to 2020")
 p
 
@@ -77,7 +77,6 @@ q
 
 
 #take the population into account
-
 group_zip<-shootings%>%group_by(ZIP)%>% tally()
 group_zip
 str(group_zip)
@@ -103,9 +102,9 @@ cor(group_zip_pop$POPULATION,group_zip_pop$n, method="pearson")
 
 
 #define the top 5 shooting rates
-
+#add the ratio to the df
 group_zip_shooting_rate<-group_zip_pop%>%mutate(shooting_rate = as.numeric(n)/
-                                                  as.numeric(POPULATION))
+                                                  as.numeric(POPULATION)/14*10000)
 group_zip_shooting_rate<-group_zip_shooting_rate%>%arrange(desc(shooting_rate))%>%
   head(5)
 group_zip_shooting_rate
